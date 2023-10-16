@@ -64,18 +64,21 @@ public class GearBox {
         }
     }
     
-    public void shiftDown() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+    public void shiftDown(GearBoxType gearBoxType) {
         if (isClutchPressed) {
             if (currentGear > 1) {
                 currentGear--;
                 System.out.println("Shifted down to gear " + currentGear);
             } else if (currentGear == 1) {
-                currentGear = GearBoxType.REVERSE.getNumberOfGears();
-                System.out.println("Shifted down to reverse gear");
-            } else {
-                System.out.println("Cannot shift down, already in lowest gear.");
+                if (gearBoxType == GearBoxType.MANUAL) {
+                    gearBoxType = GearBoxType.REVERSE;
+                    currentGear = GearBoxType.REVERSE.getNumberOfGears();
+                    System.out.println("Shifted down to reverse gear");
+                } else {
+                    System.out.println("Cannot shift down, already in lowest gear.");
+                }
+            } else if (currentGear == 0) {
+                System.out.println("Cannot shift down, already in neutral.");
             }
         } else {
             System.out.println("Cannot shift down, clutch not pressed.");

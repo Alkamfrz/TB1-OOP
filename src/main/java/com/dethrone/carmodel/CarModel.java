@@ -81,8 +81,12 @@ public class CarModel {
                                     engine.brake(brake);
                                     break;
                                 case 3:
-                                    car.moveBackward();
-                                    engine.accelerate(gearBox, car, GearBoxType.REVERSE);
+                                    if (gearBox.getCurrentGear() == 1) {
+                                        gearBox.shiftDown(gearBoxType);
+                                        gearBoxType = GearBoxType.REVERSE;
+                                    } else {
+                                        engine.accelerate(gearBox, car, GearBoxType.REVERSE);
+                                    }
                                     break;
                                 case 4:
                                     car.turnLeft();
@@ -105,7 +109,7 @@ public class CarModel {
                                                 gearBox.shiftUp(gearBoxType);
                                                 break;
                                             case 2:
-                                                gearBox.shiftDown();
+                                                gearBox.shiftDown(gearBoxType);
                                                 break;
                                             case 3:
                                                 gearBox.pressClutch(engine);

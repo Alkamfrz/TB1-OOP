@@ -114,6 +114,7 @@ public class Engine {
                     this.rpm += increment;
                     updateRpm(this.rpm);
                     System.out.println("Accelerating... RPM: " + this.rpm);
+                    System.out.println("GearBoxType: " + gearBoxType);
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
