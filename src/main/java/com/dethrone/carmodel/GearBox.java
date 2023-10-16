@@ -45,6 +45,8 @@ public class GearBox {
     }
 
     public void shiftUp(GearBoxType gearBoxType) {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         if (isClutchPressed) {
             int numGears = gearBoxType.getNumberOfGears();
             if (currentGear < numGears) {
@@ -62,6 +64,8 @@ public class GearBox {
     }
     
     public void shiftDown() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         if (isClutchPressed) {
             if (currentGear > 1) {
                 currentGear--;
@@ -78,11 +82,15 @@ public class GearBox {
     }
 
     public void pressClutch() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         this.isClutchPressed = true;
         System.out.println("Clutch pressed");
     }
 
     public void releaseClutch() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         this.isClutchPressed = false;
         System.out.println("Clutch released");
     }

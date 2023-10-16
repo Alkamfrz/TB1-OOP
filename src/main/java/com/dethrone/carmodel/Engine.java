@@ -48,6 +48,8 @@ public class Engine {
     }
 
     public void start() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         if (this.isRunning) {
             System.out.println("Engine already running");
         } else {
@@ -57,8 +59,10 @@ public class Engine {
             System.out.println("Engine started");
         }
     }
-    
+
     public void stop() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         if (!this.isRunning) {
             System.out.println("Engine already stopped");
         } else {
@@ -70,21 +74,25 @@ public class Engine {
     }
 
     public void brake(Brake brake) {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         brake.apply();
         System.out.println("Braking");
         if (this.rpm > this.minRpm) {
             this.rpm -= 1000;
         } else {
-            System.out.println("Cannot decelerate, min RPM reached");
+            System.out.println("You are already stationary");
         }
     }
 
     public void accelerate(GearBox gearBox, Car car) {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         if (!gearBox.isIsClutchPressed()) {
             if (car.getRegistrationNumber() == 0) {
                 System.out.println("Cannot move forward, car not registered");
             } else if (gearBox.getCurrentGear() == 0) {
-                System.out.println("Cannot move forward, gear in reverse");
+                System.out.println("Cannot move forward, gear in neutral");
             } else {
                 System.out.println("Accelerating");
                 int maxRpm = (int) (this.capacity * this.cylinders * 1000);
