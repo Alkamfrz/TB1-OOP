@@ -13,6 +13,7 @@ public class GearBox {
     private int currentGear;
     private float gearRatio;
     private boolean isClutchPressed;
+    private Engine engine;
 
     public GearBox(int currentGear, float gearRatio, boolean isClutchPressed) {
         this.currentGear = currentGear;
@@ -81,10 +82,12 @@ public class GearBox {
         }
     }
 
-    public void pressClutch() {
+    public void pressClutch(Engine engine) {
         System.out.print("\033[H\033[2J");
         System.out.flush();
         this.isClutchPressed = true;
+        this.engine = engine;
+        this.engine.setRpm(engine.getMinRpm());
         System.out.println("Clutch pressed");
     }
 

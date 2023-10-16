@@ -27,6 +27,14 @@ public class Engine {
         return rpm;
     }
 
+    public int getMinRpm() {
+        return minRpm;
+    }
+
+    public void updateRpm(int rpm) {
+        this.rpm = rpm;
+    }
+
     public boolean isIsRunning() {
         return isRunning;
     }
@@ -83,25 +91,37 @@ public class Engine {
         } else {
             System.out.println("You are already stationary");
         }
+        if (this.rpm == 0) {
+            this.rpm = this.minRpm;
+        }
     }
 
-    public void accelerate(GearBox gearBox, Car car) {
+    public void accelerate(GearBox gearBox, Car car, GearBoxType gearBoxType) {
         System.out.print("\033[H\033[2J");
         System.out.flush();
         if (!gearBox.isIsClutchPressed()) {
-            if (car.getRegistrationNumber() == 0) {
-                System.out.println("Cannot move forward, car not registered");
-            } else if (gearBox.getCurrentGear() == 0) {
-                System.out.println("Cannot move forward, gear in neutral");
+            if (gearBox.getCurrentGear() == 0) {
+                System.out.println("Cannot move, gear in neutral");
             } else {
-                System.out.println("Accelerating");
-                int maxRpm = (int) (this.capacity * this.cylinders * 1000);
-                if (this.rpm < maxRpm) {
-                    this.rpm += 1000;
-                    car.moveForward();
+                int maxRpm = gearBoxType.getNumberOfGears() * 1000;
+                if (gearBoxType == GearBoxType.REVERSE) {
+                    car.moveBackward();
                 } else {
-                    System.out.println("Cannot accelerate, max RPM reached");
+                    car.moveForward();
                 }
+                int increment = 1000;
+                while (this.rpm <= maxRpm) {
+                    this.rpm += increment;
+                    updateRpm(this.rpm);
+                    System.out.println("Accelerating... RPM: " + this.rpm);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println("Max RPM reached");
+                updateRpm(this.rpm);
             }
         } else {
             System.out.println("Cannot accelerate, clutch is pressed");
